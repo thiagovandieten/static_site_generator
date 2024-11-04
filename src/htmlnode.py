@@ -2,8 +2,8 @@ class HTMLNode:
 
     def __init__(
         self,
-        tag: str | None = None,
         value: str | None = None,
+        tag: str | None = None,
         children: list[str] | None = None,
         props: dict[str, str] | None = None,
     ):
@@ -15,8 +15,8 @@ class HTMLNode:
     def __repr__(self) -> str:
         return (
             f"HTMLNode data:\n"
-            f"tag: {self.tag}\n"
             f"value: {self.value}\n"
+            f"tag: {self.tag}\n"
             f"children: {self.children}\n"
             f"props: {self.props}"
         )
