@@ -20,15 +20,19 @@ class TestHtmlNode(unittest.TestCase):
 
     def test_string_repr(self):
         node = HTMLNode(
-            "A", "Google", None, {"href": "https://www.google.com", "target": "_blank"}
+            "a", "Google", None, {"href": "https://www.google.com", "target": "_blank"}
         )
         self.assertEqual(
             f"{node}",
             (
                 "HTMLNode data:\n"
-                "tag: A\n"
-                "value: Google\n"
+                "value: a\n"
+                "tag: Google\n"
                 "children: None\n"
                 "props: {'href': 'https://www.google.com', 'target': '_blank'}"
             )
         )
+
+if __name__ == "__main__":
+    unittest.main()
+
