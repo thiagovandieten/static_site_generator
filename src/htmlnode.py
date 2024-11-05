@@ -29,3 +29,12 @@ class HTMLNode:
             raise ValueError("Props is empty")
         list_string = list(map(lambda x: f'{x[0]}="{x[1]}"', self.props.items()))
         return " ".join(list_string)
+
+    def props_to_string(self) -> str:
+        if self.props is None:
+            raise ValueError("Props is empty")
+        props_string = ""
+        for i in self.props:
+            props_string += f'{i}="{self.props[i]}" '
+        return props_string.rstrip()
+    

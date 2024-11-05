@@ -14,5 +14,7 @@ class LeafNode(HTMLNode):
         if not self.value: raise ValueError("Value empty or not defined")
         if not self.tag: return self.value
 
-        #TODO: Need to include all the props in this string. Might want to build a props to string in HTMLNode
-        return f"<{self.tag}>{self.value}</{self.tag}>"
+        return f"<{self.tag}{" " + self.props_to_string() if self.props else ""}>{self.value}</{self.tag}>"
+    
+    def props_to_string(self) -> str:
+        return super().props_to_string()
