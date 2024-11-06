@@ -4,7 +4,7 @@ from leafnode import LeafNode
 class TestLeafNode(unittest.TestCase):
     def test_html_output(self):
         node = LeafNode(
-            "Google", "a", None, {"href": "https://www.google.com", "target": "_blank"}
+            "Google", "a", {"href": "https://www.google.com", "target": "_blank"}
         )
         self.assertEqual(node.to_html(), '<a href="https://www.google.com" target="_blank">Google</a>')
 
@@ -23,7 +23,7 @@ class TestLeafNode(unittest.TestCase):
 
     def test_html_output_with_multiple_props(self):
         node = LeafNode(
-            "Link", "a", None, {"href": "https://example.com", "class": "external-link"}
+            "Link", "a", {"href": "https://example.com", "class": "external-link"}
         )
         self.assertEqual(node.to_html(), '<a href="https://example.com" class="external-link">Link</a>')
 
