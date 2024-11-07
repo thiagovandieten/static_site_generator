@@ -1,5 +1,10 @@
-from typing import override
+import sys
 from functools import reduce
+
+if sys.version_info >= (3,12):
+    from typing import override
+else:
+    from typing_extensions import override
 
 from htmlnode import HTMLNode
 
