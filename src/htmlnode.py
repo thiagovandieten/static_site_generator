@@ -1,10 +1,12 @@
+from typing import Any
+
 class HTMLNode:
 
     def __init__(
         self,
         value: str | None = None,
         tag: str | None = None,
-        children: list[str] | None = None,
+        children: list[Any] | None = None,
         props: dict[str, str] | None = None,
     ):
         self.tag = tag
