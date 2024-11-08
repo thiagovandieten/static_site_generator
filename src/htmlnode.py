@@ -14,6 +14,12 @@ class HTMLNode:
         self.children = children
         self.props = props
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, HTMLNode):
+            raise NotImplementedError
+        
+        return True if vars(self) == vars(other) else False
+
     def __repr__(self) -> str:
         return (
             f"HTMLNode data:\n"
