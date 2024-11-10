@@ -1,6 +1,7 @@
 import unittest
-from util import split_nodes_delimiter
+from util import *
 from textnode import TextNode, TextType
+
 class test_util(unittest.TestCase):
 
     def test_split_notes_code(self):
@@ -18,9 +19,13 @@ class test_util(unittest.TestCase):
         ]
         self.assertEqual(split_nodes_delimiter(test_list,'`', TextType.CODE), expected_list)
     
-    # def test_find_delimitier(self):
-    #     test_str = "I am a line of text with `CODEEEE`, let's hope this works"
-    #     self.assertEqual(_find_delimiter_in_line(test_str, '`'), [25,33])
-        
-    #     test_str2 = "I am a line of text with *ITALICS*, let's *hope* this works"
-    #     self.assertEqual(_find_delimiter_in_line(test_str2, '*'), [25,33,42,47])
+    def test_extract_image(self):
+        test_str = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        expected_result = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"),("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+        self.assertEqual(extract_markdown_images(test_str), expected_result)
+
+    def test_extract_hyperlink(self):
+        test_str = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        expected_result = [("to boot dev", "https://www.boot.dev"),("to youtube", "https://www.youtube.com/@bootdotdev")]
+        self.assertEqual(extract_markdown_links(test_str), expected_result)
+

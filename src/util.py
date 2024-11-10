@@ -1,5 +1,6 @@
 # from enum import Enum
 from textnode import TextNode, TextType
+import re
 
 def split_nodes_delimiter(
     old_nodes: list[TextNode], delimiter, text_type: TextType
@@ -46,7 +47,11 @@ def _generate_texttype_list(first_index, len_words, texttype):
 
     return texttypes
 
+def extract_markdown_images(text):
+    return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
 
+def extract_markdown_links(text):
+    return re.findall(r"[^!]\[(.*?)\]\((.*?)\)", text)
 # I didn't get to use this method but would still like to keep it incase.
 
 # def _find_delimiter_in_line(string: str, delimiter: str, offset: int = 0) -> list[int]:
