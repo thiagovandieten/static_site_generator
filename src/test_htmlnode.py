@@ -15,8 +15,8 @@ class TestHtmlNode(unittest.TestCase):
         )
 
     def test_raise_empty_props(self):
-        node = HTMLNode("h2", "Header 2")
-        self.assertRaises(ValueError, node.props_to_html)
+        node = HTMLNode("Header 2", "h2")
+        self.assertRaises(ValueError, node.props_to_string)
 
     def test_string_repr(self):
         node = HTMLNode(
