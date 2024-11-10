@@ -32,12 +32,6 @@ class HTMLNode:
     def to_html(self) -> str:
         raise NotImplementedError()
 
-    def props_to_html(self) -> str:
-        if self.props is None:
-            raise ValueError("Props is empty")
-        list_string = list(map(lambda x: f'{x[0]}="{x[1]}"', self.props.items()))
-        return " ".join(list_string)
-
     def props_to_string(self) -> str:
         if self.props is None:
             raise ValueError("Props is empty")

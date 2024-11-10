@@ -8,10 +8,10 @@ class TestHtmlNode(unittest.TestCase):
         node = HTMLNode("h1", "Header")
         self.assertRaises(NotImplementedError, node.to_html)
 
-    def test_props_to_html(self):
+    def test_props_to_string(self):
         node = HTMLNode(props={"href": "https://www.google.com", "target": "_blank"})
         self.assertEqual(
-            node.props_to_html(), 'href="https://www.google.com" target="_blank"'
+            node.props_to_string(), 'href="https://www.google.com" target="_blank"'
         )
 
     def test_raise_empty_props(self):
