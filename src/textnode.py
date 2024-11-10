@@ -9,7 +9,17 @@ class TextType(Enum):
     LINK = "link"
     IMAGE = "image"
 
+"""Representation of text with their properties
 
+    The purpose of a node like this is the ability to easily convert to a HTMLNode
+
+    Attributes:
+        text: A string representing the value of a Textnode
+        text_type: This value dicates the proper html tag for conversion
+        url: Specifically for those with text_type, it refers to the location
+        of the resource
+
+"""
 class TextNode:
     def __init__(self, text: str, text_type: TextType, url: str | None = None) -> None:
         self.text = text
