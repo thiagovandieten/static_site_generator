@@ -18,7 +18,7 @@ class test_util(unittest.TestCase):
             TextNode(" but my type is Normal", TextType.NORMAL),
         ]
         self.assertEqual(
-            split_nodes_delimiter(test_list, "`", TextType.CODE), expected_list
+            split_nodes_delimiter(test_list, "`"), expected_list
         )
 
     def test_extract_image(self):
@@ -75,5 +75,27 @@ class test_util(unittest.TestCase):
         test_nodes = [
             TextNode("This is text with no link", TextType.NORMAL),
         ]
-        with self.assertRaises(ValueError):
-            split_nodes_links(test_nodes)
+        self.assertEqual(split_nodes_links(test_nodes), test_nodes)
+            
+
+    def test_text_to_textnodes(self):
+        long_string = (f"Hello! I'm Thiago *and* i'm **testing** if `this works`"
+                        f"throwing a image here ![jerma spinning](https://media.tenor.com/SJXGyYpQFdgAAAAi/jerma-sparkle.gif)"
+                        f"and a hyperlink [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)")
+
+        expected_nodes = [
+            TextNode("Hello! I'm Thiago ", TextType.NORMAL),
+            TextNode("and", TextType.ITALIC),
+            TextNode(" i'm ", TextType.NORMAL),
+            TextNode("testing", TextType.BOLD),
+            TextNode(" if ", TextType.NORMAL),
+            TextNode("this works", TextType.CODE),
+            TextNode("throwing a image here ", TextType.NORMAL),
+            TextNode("jerma spinning", TextType.IMAGE, "https://media.tenor.com/SJXGyYpQFdgAAAAi/jerma-sparkle.gif"),
+            TextNode("and a hyperlink ", TextType.NORMAL),
+            TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+            TextNode(" and ", TextType.NORMAL),
+            TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
+        ]
+        result_nodes = text_to_textnodes(long_string)
+        self.assertEqual(result_nodes, expected_nodes)

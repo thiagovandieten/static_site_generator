@@ -1,9 +1,21 @@
 from textnode import TextNode, TextType
 import re
 
+def text_to_textnodes(text) -> list[TextNode]:
+    # First create a listh with 1 TextNode out of text
+    list_textnodes = [TextNode(text, TextType.NORMAL)]
+    # Then it has to go through split nodes delimiter 3 times
+    delimiters = ["`", "**", "*"]
+    for delimiter in delimiters:
+        list_textnodes = split_nodes_delimiter(list_textnodes, delimiter)
+    # then through split_nodes_images
+    list_textnodes = split_nodes_images(list_textnodes)
+    # and then finally through split_nodes_links.
+    list_textnodes = split_nodes_links(list_textnodes)
+    return list_textnodes
 
 def split_nodes_delimiter(
-    old_nodes: list[TextNode], delimiter, text_type: TextType
+    old_nodes: list[TextNode], delimiter
 ) -> list[TextNode]:
 
     md_delimiters = {"`": TextType.CODE, "*": TextType.ITALIC, "**": TextType.BOLD}
@@ -19,7 +31,7 @@ def split_nodes_delimiter(
             first_index = node.text.find(delimiter)
             words_list = node.text.split(delimiter)
             typetext_list = _generate_texttype_list(
-                first_index, len(words_list), text_type
+                first_index, len(words_list), md_delimiters[delimiter]
             )
             words_with_typetext = zip(words_list, typetext_list)
             for wt in words_with_typetext:
@@ -57,7 +69,8 @@ def split_nodes_images(old_nodes: list[TextNode]) -> list[TextNode]:
         image_matches = extract_markdown_images(node.text)
 
         if not image_matches:
-            raise ValueError("No image tag found")
+            new_nodes.append(node)
+            continue
 
         remaining_text = node.text
 
@@ -83,7 +96,8 @@ def split_nodes_links(old_nodes: list[TextNode]) -> list[TextNode]:
         link_matches = extract_markdown_links(node.text)
 
         if not link_matches:
-            raise ValueError("No hyperlink tag found")
+            new_nodes.append(node)
+            continue
 
         remaining_text = node.text
 
