@@ -140,6 +140,16 @@ def extract_markdown_links(text):
     return re.findall(r"[^!]\[(.*?)\]\((.*?)\)", text)
 
 
+def markdown_to_blocks(markdown) -> list[str]:
+    split_list = markdown.split("\n\n")
+
+    return list(
+        map(lambda x: x.strip(), 
+            filter(lambda x: len(x) > 0, split_list)
+            )
+        )
+
+
 # I didn't get to use this method but would still like to keep it incase.
 
 # def _find_delimiter_in_line(string: str, delimiter: str, offset: int = 0) -> list[int]:

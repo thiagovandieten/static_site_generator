@@ -76,9 +76,11 @@ class test_util(unittest.TestCase):
         self.assertEqual(split_nodes_links(test_nodes), test_nodes)
 
     def test_text_to_textnodes(self):
-        long_string = (f"Hello! I'm Thiago *and* i'm **testing** if `this works`"
-                        f"throwing a image here ![jerma spinning](https://media.tenor.com/SJXGyYpQFdgAAAAi/jerma-sparkle.gif)"
-                        f"and a hyperlink [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)")
+        long_string = (
+            f"Hello! I'm Thiago *and* i'm **testing** if `this works`"
+            f"throwing a image here ![jerma spinning](https://media.tenor.com/SJXGyYpQFdgAAAAi/jerma-sparkle.gif)"
+            f"and a hyperlink [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        )
 
         expected_nodes = [
             TextNode("Hello! I'm Thiago ", TextType.NORMAL),
@@ -88,11 +90,54 @@ class test_util(unittest.TestCase):
             TextNode(" if ", TextType.NORMAL),
             TextNode("this works", TextType.CODE),
             TextNode("throwing a image here ", TextType.NORMAL),
-            TextNode("jerma spinning", TextType.IMAGE, "https://media.tenor.com/SJXGyYpQFdgAAAAi/jerma-sparkle.gif"),
+            TextNode(
+                "jerma spinning",
+                TextType.IMAGE,
+                "https://media.tenor.com/SJXGyYpQFdgAAAAi/jerma-sparkle.gif",
+            ),
             TextNode("and a hyperlink ", TextType.NORMAL),
             TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
             TextNode(" and ", TextType.NORMAL),
-            TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
+            TextNode(
+                "to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"
+            ),
         ]
         result_nodes = text_to_textnodes(long_string)
         self.assertEqual(result_nodes, expected_nodes)
+
+    def test_markdown_to_block_string(self):
+        very_long_string = (
+            "# Header 1: A variable that includes a lot of lines\n\n "
+            "   to break up a string over multiple lines. This is a very long string "
+            "that I am going to use to demonstrate how to break up a string over "
+            "multiple lines.\n\n "
+            "Now here's a list of items:\n"
+            "- Item 1\n"
+            "- Item 2\n"
+            "- Item 3\n"
+        )
+        expected_result = [
+            "# Header 1: A variable that includes a lot of lines",
+            "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
+            "Now here's a list of items:\n- Item 1\n- Item 2\n- Item 3"
+        ]
+        self.assertEqual(markdown_to_blocks(very_long_string), expected_result)
+
+    # Test to see if markdown_to_blocks strips away any empty blocks (\n\n\n\n)
+    def test_markdown_to_block_string_empty(self):
+        very_long_string = (
+            "# Header 1: A variable that includes a lot of lines\n\n\n\n "
+            "   to break up a string over multiple lines. This is a very long string "
+            "that I am going to use to demonstrate how to break up a string over "
+            "multiple lines.\n\n\n\n "
+            "Now here's a list of items:\n"
+            "- Item 1\n"
+            "- Item 2\n"
+            "- Item 3\n"
+        )
+        expected_result = [
+            "# Header 1: A variable that includes a lot of lines",
+            "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
+            "Now here's a list of items:\n- Item 1\n- Item 2\n- Item 3"
+        ]
+        self.assertEqual(markdown_to_blocks(very_long_string), expected_result)
