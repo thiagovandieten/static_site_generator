@@ -1,7 +1,6 @@
 from textnode import TextNode, TextType
 import re
 
-
 def text_to_textnodes(text) -> list[TextNode]:
     # First create a listh with 1 TextNode out of text
     list_textnodes = [TextNode(text, TextType.NORMAL)]
@@ -138,51 +137,4 @@ def extract_markdown_images(text):
 
 def extract_markdown_links(text):
     return re.findall(r"[^!]\[(.*?)\]\((.*?)\)", text)
-
-
-def markdown_to_blocks(markdown) -> list[str]:
-    split_list = markdown.split("\n\n")
-
-    return list(
-        map(lambda x: x.strip(), 
-            filter(lambda x: len(x) > 0, split_list)
-            )
-        )
-
-
-# I didn't get to use this method but would still like to keep it incase.
-
-# def _find_delimiter_in_line(string: str, delimiter: str, offset: int = 0) -> list[int]:
-#     """A method to find the delimiters' indexes
-
-#     This method returns a list of all the delimiter indexes.
-#     Different methods can use this information to determine what is wrapped
-#     within certain delimiters.
-
-#     Args:
-#         string: Perferably one line
-#         delimiter: The delimiter is usually the markdown syntax
-#         offset: Offset is used to remember the string's length through
-#         the recursion.
-
-#     Returns:
-#         A list with indexes (int)
-
-#     Raises:
-#         AttributeError for a non markdown delimiter
-#     """
-
-#     index = string.find(delimiter)
-#     if index == -1:
-#         return []
-#     elif delimiter == "*":
-#         # We want to check if the character next to it is also a *, indicating a bold type
-#         if string[index + 1] == "*":
-#             new_offset = offset + index + 2
-#             _find_delimiter_in_line(string[index + 2 :], delimiter, new_offset)
-
-#     new_offset = offset + index + 1
-#     list_indexes = _find_delimiter_in_line(string[index + 1 :], delimiter, new_offset)
-#     list_indexes.insert(0, index + offset)
-
-#     return list_indexes
+pass
