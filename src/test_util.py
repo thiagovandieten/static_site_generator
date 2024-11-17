@@ -17,9 +17,7 @@ class test_util(unittest.TestCase):
             TextNode("code", TextType.CODE),
             TextNode(" but my type is Normal", TextType.NORMAL),
         ]
-        self.assertEqual(
-            split_nodes_delimiter(test_list, "`"), expected_list
-        )
+        self.assertEqual(split_nodes_delimiter(test_list, "`"), expected_list)
 
     def test_extract_image(self):
         test_str = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
@@ -76,7 +74,6 @@ class test_util(unittest.TestCase):
             TextNode("This is text with no link", TextType.NORMAL),
         ]
         self.assertEqual(split_nodes_links(test_nodes), test_nodes)
-            
 
     def test_text_to_textnodes(self):
         long_string = (f"Hello! I'm Thiago *and* i'm **testing** if `this works`"

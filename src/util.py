@@ -1,6 +1,7 @@
 from textnode import TextNode, TextType
 import re
 
+
 def text_to_textnodes(text) -> list[TextNode]:
     # First create a listh with 1 TextNode out of text
     list_textnodes = [TextNode(text, TextType.NORMAL)]
@@ -14,9 +15,8 @@ def text_to_textnodes(text) -> list[TextNode]:
     list_textnodes = split_nodes_links(list_textnodes)
     return list_textnodes
 
-def split_nodes_delimiter(
-    old_nodes: list[TextNode], delimiter
-) -> list[TextNode]:
+
+def split_nodes_delimiter(old_nodes: list[TextNode], delimiter) -> list[TextNode]:
 
     md_delimiters = {"`": TextType.CODE, "*": TextType.ITALIC, "**": TextType.BOLD}
 
