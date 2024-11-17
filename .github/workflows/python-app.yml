@@ -32,4 +32,4 @@ jobs:
         mypy ./src
     - name: Test with unittest
       run: |
-        python -m unittest discover -s src
+        python -m unittest discover -s tests

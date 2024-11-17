@@ -6,7 +6,7 @@ if sys.version_info >= (3,12):
 else:
     from typing_extensions import override
 
-from htmlnode import HTMLNode
+from src.htmlnode import HTMLNode
 
 class ParentNode(HTMLNode):
     @override

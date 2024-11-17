@@ -1,6 +1,6 @@
 import unittest
-from inline import *
-from textnode import TextNode, TextType
+from src.inline import *
+from src.textnode import TextNode, TextType
 
 
 class test_inline(unittest.TestCase):

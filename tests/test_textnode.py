@@ -1,6 +1,6 @@
 import unittest
-from textnode import TextType, TextNode
-from leafnode import LeafNode
+from src.textnode import TextType, TextNode
+from src.leafnode import LeafNode
 
 
 class TestTextNode(unittest.TestCase):
