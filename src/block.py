@@ -20,8 +20,14 @@ def block_to_block_type(block: str):
     # Check for header by seeing if it starts with #'s
     # Currently not sure if I should implement if it's header 1-6 so a basic header check will do
     if block.startswith("#"):
-        return "header"
+        return BlockType.HEADING
     # Check if the block is a code 
     elif block.startswith("```") and block.endswith("```"):
-        return "code"
-    pass
+        return BlockType.CODE
+    elif block.startswith('>'):
+        return BlockType.QUOTE
+    elif block.startswith(("-", "*")):
+        return BlockType.UNORDERED_LIST
+    else:
+        return BlockType.PARAGRAPH
+
