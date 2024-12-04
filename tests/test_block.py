@@ -55,15 +55,55 @@ class test_block(unittest.TestCase):
         ]
         block_types = []
         for block in result_from_previous_test:
-            block_types.append(block_to_block_type(block))
+            block_types.append(determine_block_type(block))
 
-        self.assertListEqual([
-            BlockType.HEADING,
-            BlockType.PARAGRAPH,
-            BlockType.QUOTE,
-            BlockType.PARAGRAPH,
-            BlockType.UNORDERED_LIST
-        ], block_types)
+        self.assertListEqual(
+            [
+                BlockType.HEADING,
+                BlockType.PARAGRAPH,
+                BlockType.QUOTE,
+                BlockType.PARAGRAPH,
+                BlockType.UNORDERED_LIST,
+            ],
+            block_types,
+        )
+
+    def test_markdown_to_html(self):
+        result_from_previous_test = [
+            "# Header 1: A variable that includes a *lot* of lines",
+            "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
+            "> This is a real quote, I said this! - Abraham Lincoln",
+            "Now here's a list of items:",
+            "- Item 1\n- Item 2\n- Item 3",
+        ]
+
+        expected_result = ParentNode(
+            "div",
+            [
+                ParentNode("h1", [
+                    LeafNode("Header 1: A variable that includes a "),
+                    LeafNode("i", "lot"),
+                    LeafNode(" of lines"),
+                    ]),
+                LeafNode(
+                    "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
+                    "p",
+                ),
+                LeafNode("blockquote", "This is a real quote, I said this! - Abraham Lincoln"),
+                LeafNode("p", "Now here's a list of items:"),
+                ParentNode(
+                    "ul",
+                    [
+                        LeafNode("li", "Item 1"),
+                        LeafNode("li", "Item 2"),
+                        LeafNode("li", "Item 3"),
+                    ],
+                ),
+            ],
+        )
+        result_string = "\n\n".join(result_from_previous_test)
+        result = markdown_to_html(result_string)
+        self.assertEqual(result, expected_result)
 
 
 if __name__ == "__main__":

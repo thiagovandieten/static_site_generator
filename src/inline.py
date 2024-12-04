@@ -22,10 +22,10 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter) -> list[TextNode
     if delimiter not in md_delimiters.keys():
         raise ValueError("Not a valid markdown delimiter")
 
-    new_nodes: list[TextNode] = []
+    new_textnodes: list[TextNode] = []
     for node in old_nodes:
         if node.text_type != TextType.NORMAL:
-            new_nodes.append(node)
+            new_textnodes.append(node)
         else:
             first_index = node.text.find(delimiter)
             words_list = node.text.split(delimiter)
@@ -34,9 +34,9 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter) -> list[TextNode
             )
             words_with_typetext = zip(words_list, typetext_list)
             for wt in words_with_typetext:
-                new_nodes.append(TextNode(wt[0], wt[1]))
+                new_textnodes.append(TextNode(wt[0], wt[1]))
 
-    return new_nodes
+    return new_textnodes
 
 
 def _generate_texttype_list(first_index, len_words, texttype):

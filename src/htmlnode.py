@@ -29,9 +29,9 @@ class HTMLNode:
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, HTMLNode):
-            raise NotImplementedError
+           return False
+        return self.tag == other.tag and self.children == other.children and self.props == other.props
         
-        return True if vars(self) == vars(other) else False
 
     def __repr__(self) -> str:
         return (
