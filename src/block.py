@@ -14,10 +14,18 @@ class BlockType(Enum):
     UNORDERED_LIST = "unordered_list"
 
 
-def markdown_to_blocks(markdown) -> list[str]:
-    split_list = markdown.split("\n\n")
+def markdown_to_blocks(markdown: str) -> list[tuple[str, BlockType]]:
+    split_block_list = markdown.split("\n\n")
+    santized_block_list : list[str] = list(map(lambda x: x.strip(), filter(lambda x: len(x) > 0, split_block_list)))
+    block_types : list[BlockType] = []
+    tag_removed_block_list : list[str] = []
+    for block in santized_block_list:
+        block_type = determine_block_type(block)
+        block_types.append(block_type)
+        tag_removed_block_list.append(remove_markdown_syntax_from_block(block, block_type))
 
-    return list(map(lambda x: x.strip(), filter(lambda x: len(x) > 0, split_list)))
+    result = list(zip(tag_removed_block_list, block_types))
+    return result
 
 def determine_block_type(block: str):
     # Check for header by seeing if it starts with #'s
@@ -39,10 +47,9 @@ def markdown_to_html(markdown) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
     output_nodes = []
     for block in blocks:
-        block_type = determine_block_type(block)
         children = text_to_textnodes(block)
         # Here's a regex for finding the markdown syntax: https://regexr.com/894il
-        output_nodes.append(block_to_node(block, block_type, children))
+        output_nodes.append(block_to_node(block[0], block[1], children))
         pass
 
     return ParentNode("div", output_nodes)
@@ -69,3 +76,19 @@ def block_to_node(block: str, block_type: BlockType, children: list[TextNode]) -
             return ParentNode("ul", child_nodes)
         case _:
             return ParentNode("p", child_nodes)
+
+def remove_markdown_syntax_from_block(block: str, block_type:BlockType) -> str:
+    match block_type:
+        case BlockType.HEADING:
+            return block.replace("#", "").strip()
+        case BlockType.CODE:
+            return block.replace("```", "").strip()
+        case BlockType.QUOTE:
+            return block.replace(">", "").strip()
+        case BlockType.ORDERED_LIST:
+            return block.replace("-", "").strip()
+        case BlockType.UNORDERED_LIST:
+            return block.replace("*", "").strip()
+        case _:
+            return block
+    

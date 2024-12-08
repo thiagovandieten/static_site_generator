@@ -9,15 +9,19 @@ class test_block(unittest.TestCase):
             "   to break up a string over multiple lines. This is a very long string "
             "that I am going to use to demonstrate how to break up a string over "
             "multiple lines.\n\n "
-            "Now here's a list of items:\n"
+            "Now here's a list of items:\n\n"
             "- Item 1\n"
             "- Item 2\n"
             "- Item 3\n"
         )
         expected_result = [
-            "# Header 1: A variable that includes a lot of lines",
-            "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
-            "Now here's a list of items:\n- Item 1\n- Item 2\n- Item 3",
+            ("Header 1: A variable that includes a lot of lines", BlockType.HEADING),
+            (
+                "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
+                BlockType.PARAGRAPH,
+            ),
+            ("Now here's a list of items:", BlockType.PARAGRAPH),
+            ("- Item 1\n- Item 2\n- Item 3", BlockType.UNORDERED_LIST),
         ]
         self.assertEqual(markdown_to_blocks(very_long_string), expected_result)
 
@@ -35,11 +39,14 @@ class test_block(unittest.TestCase):
             "- Item 3\n"
         )
         expected_result = [
-            "# Header 1: A variable that includes a lot of lines",
-            "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
-            "> This is a real quote, I said this! - Abraham Lincoln",
-            "Now here's a list of items:",
-            "- Item 1\n- Item 2\n- Item 3",
+            ("Header 1: A variable that includes a lot of lines", BlockType.HEADING),
+            (
+                "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
+                BlockType.PARAGRAPH,
+            ),
+            ("This is a real quote, I said this! - Abraham Lincoln", BlockType.QUOTE),
+            ("Now here's a list of items:", BlockType.PARAGRAPH),
+            ("- Item 1\n- Item 2\n- Item 3", BlockType.UNORDERED_LIST),
         ]
         self.assertEqual(markdown_to_blocks(very_long_string), expected_result)
 
@@ -80,16 +87,21 @@ class test_block(unittest.TestCase):
         expected_result = ParentNode(
             "div",
             [
-                ParentNode("h1", [
-                    LeafNode("Header 1: A variable that includes a "),
-                    LeafNode("i", "lot"),
-                    LeafNode(" of lines"),
-                    ]),
+                ParentNode(
+                    "h1",
+                    [
+                        LeafNode("Header 1: A variable that includes a "),
+                        LeafNode("i", "lot"),
+                        LeafNode(" of lines"),
+                    ],
+                ),
                 LeafNode(
                     "to break up a string over multiple lines. This is a very long string that I am going to use to demonstrate how to break up a string over multiple lines.",
                     "p",
                 ),
-                LeafNode("blockquote", "This is a real quote, I said this! - Abraham Lincoln"),
+                LeafNode(
+                    "blockquote", "This is a real quote, I said this! - Abraham Lincoln"
+                ),
                 LeafNode("p", "Now here's a list of items:"),
                 ParentNode(
                     "ul",
